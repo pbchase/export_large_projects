@@ -37,7 +37,7 @@ if(isset($_POST['download'])) {
 		displayMsg("Unable to located requested file: $target_filename", "errorMsg","center","red","exclamation_frame.png", 600);
 		exit();
 	}
-	
+
 	// Download file and then delete it from the server
 	header('Pragma: anytextexeptno-cache', true);
 	header('Content-Type: application/octet-stream"');
@@ -45,7 +45,7 @@ if(isset($_POST['download'])) {
 	header('Content-Length: ' . filesize($target_file));
 	ob_end_flush();
     readfile_chunked($target_file);
-    
+
     // Log event
 	REDCap::logEvent("Full Export Downloaded");
 	exit();
@@ -131,7 +131,8 @@ foreach ($batches as $b => $batch) {
 
 	fwrite($fh, $records);
 	$batch_times[$b] = microtime(true) - $batch_start;
-	$str = "Batch " . $b . " is completed.";
+	$elapsed_time = microtime(true) - $time_start;
+	$str = "Batch " . $b . " is completed. " . $time_remaining_msg . " Elapsed time is " . round($elapsed_time);
 	REDCap::logEvent($str);
 }
 fclose($fh);
@@ -146,7 +147,7 @@ $html = RCView::form(
 		'class'=>'jqbutton',
 		'style'=>'color:#800000;width:200px;',
 		'onclick'=>'$(this).submit();'),"<div style='float:left;padding-top:2px;'>" . trim(DataExport::getDownloadIcon('csv', false)) . "</div><div style='padding-top:8px;'>Download export<div style='font-size:smaller;'>Filesize: " . round(filesize($target_file)/1024) . "kb</div></div>"
-	) . 
+	) .
 	RCView::div(array('style'=>'margin:10px;'),"This file will be automatically deleted from the server in approximately one hour")
 );
 
