@@ -31,6 +31,15 @@
             "default": "20"
         }
     ],
+    "links": {
+       "project": [
+          {
+             "name": "Large Project Export",
+             "icon": "go-down",
+             "url": "plugins/export.php"
+          }
+       ]
+    },
     "compatibility": {
         "redcap-version-min": "8.0.3"
    }
